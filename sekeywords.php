@@ -59,7 +59,7 @@ class SEKeywords extends ModuleGraph
 
 	public function install()
 	{
-		if (!parent::install() || !$this->registerHook('top') || !$this->registerHook('AdminStatsModules'))
+		if (!parent::install() || !$this->registerHook('top') || !$this->registerHook('AdminStatsModules') || !$this->registerHook('actionPSCleanerGetModulesTables'))
 			return false;
 		Configuration::updateValue('SEK_MIN_OCCURENCES', 1);
 		Configuration::updateValue('SEK_FILTER_KW', '');
@@ -81,6 +81,11 @@ class SEKeywords extends ModuleGraph
 			return false;
 
 		return (Db::getInstance()->execute('DROP TABLE `'._DB_PREFIX_.'sekeyword`'));
+	}
+
+	public function hookActionPSCleanerGetModulesTables()
+	{
+		return array('sekeyword');
 	}
 
 	public function hookTop($params)
